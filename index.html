@@ -182,7 +182,6 @@
       flex-shrink: 0;
     }
 
-    /* ── NOTE ── */
     .note {
       font-size: .75rem;
       color: var(--on-surface-var);
@@ -190,7 +189,6 @@
       font-weight: 500;
     }
 
-    /* ── RESULT HERO ── */
     .result-hero {
       background: var(--surface-lowest);
       border-radius: 18px;
@@ -238,7 +236,6 @@
       color: var(--outline-var);
     }
 
-    /* ── PRIMARY BUTTON ── */
     .btn-primary {
       width: 100%;
       padding: 15px 20px;
@@ -472,7 +469,6 @@
     footer a { color: var(--secondary); text-decoration: none; margin: 0 6px; }
     footer a:hover { text-decoration: underline; }
 
-    /* ── TOAST ── */
     .toast {
       position: fixed;
       bottom: 32px;
@@ -497,7 +493,6 @@
 <body>
 <div class="app">
 
-  <!-- HEADER -->
   <header>
     <div class="logo-mark">
       <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -511,7 +506,6 @@
     </div>
   </header>
 
-  <!-- TABS -->
   <div class="tabs" role="tablist">
     <button class="tab-btn active" id="tab-convert" role="tab" aria-selected="true" onclick="switchTab('convert')">⏱ Time → Decimal</button>
     <button class="tab-btn" id="tab-sum" role="tab" aria-selected="false" onclick="switchTab('sum')">
@@ -519,7 +513,6 @@
     </button>
   </div>
 
-  <!-- ══ SCREEN 1: Convert ══ -->
   <section class="screen active" id="screen-convert" role="tabpanel">
 
     <div>
@@ -545,7 +538,6 @@
       </div>
     </div>
 
-    <!-- RESULT -->
     <div class="result-hero" id="convert-result-card">
       <div class="result-label">Result</div>
       <div class="result-empty" id="convert-result-empty">Enter a time above</div>
@@ -567,7 +559,6 @@
 
   </section>
 
-  <!-- ══ SCREEN 2: Sum & Convert ══ -->
   <section class="screen" id="screen-sum" role="tabpanel">
 
     <div>
@@ -595,7 +586,6 @@
       </div>
     </div>
 
-    <!-- TOTAL -->
     <div class="sum-total-card" id="sum-total-card">
       <div class="sum-total-label">Total Sum</div>
       <div class="sum-total-time" id="sum-total-time">00:00:00</div>
@@ -603,7 +593,6 @@
       <div class="sum-count" id="sum-count">0 entries</div>
     </div>
 
-    <!-- ENTRIES -->
     <div>
       <div class="activity-header">
         <p class="section-label">Current Entries</p>

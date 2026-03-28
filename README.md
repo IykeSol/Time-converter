@@ -21,7 +21,7 @@ Just open `index.html` in any browser. No server required.
 
 ## Live Demo
 
-Coming soon on [IykeSol's Portfolio →](https://iykesol.vercel.app)
+🔗 [iykesol-convert.netlify.app](https://iykesol-convert.netlify.app)
 
 ---
 
