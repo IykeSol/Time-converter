@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>IykeSol Convert | Precision Time to Decimal Calculator</title>
+  <meta name="description" content="Convert hours, minutes and seconds to decimal hours instantly. Sum multiple time entries and get accurate decimal totals. Built by IykeSol — free, fast, and precise." />
+  <meta name="keywords" content="time to decimal converter, hours minutes seconds calculator, decimal hours, time calculator, IykeSol, sum time entries" />
+  <meta name="author" content="IykeSol" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://iykesol.vercel.app" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="IykeSol Convert | Precision Time to Decimal Calculator" />
+  <meta property="og:description" content="Convert hours, minutes and seconds to decimal hours instantly. Sum multiple time entries and get accurate decimal totals." />
+  <meta property="og:url" content="https://iykesol.vercel.app" />
+  <meta property="og:site_name" content="IykeSol Convert" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="IykeSol Convert | Precision Time to Decimal Calculator" />
+  <meta name="twitter:description" content="Convert hours, minutes and seconds to decimal hours instantly. Free, fast, and precise." />
+  <meta name="twitter:creator" content="@IykeSol" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:          #00236f;
+      --primary-cont:     #1e3a8a;
+      --secondary:        #0058be;
+      --secondary-cont:   #2170e4;
+      --surface:          #f7f9fb;
+      --surface-low:      #f2f4f6;
+      --surface-high:     #e6e8ea;
+      --surface-highest:  #e0e3e5;
+      --surface-lowest:   #ffffff;
+      --on-surface:       #191c1e;
+      --on-surface-var:   #444651;
+      --outline-var:      #c5c5d3;
+      --error:            #ba1a1a;
+      --font-head:        'Space Grotesk', sans-serif;
+      --font-body:        'Manrope', sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--surface);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+    }
+
+    header {
+      padding: 20px 24px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-mark {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-cont) 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,35,111,.22);
+      flex-shrink: 0;
+    }
+    .logo-mark svg { width: 20px; height: 20px; }
+    .logo-text {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary-cont);
+      letter-spacing: -.01em;
+    }
+    .logo-sub {
+      font-size: .68rem;
+      font-family: var(--font-body);
+      color: var(--on-surface-var);
+      font-weight: 500;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .tabs {
+      display: flex;
+      margin: 20px 24px 0;
+      background: var(--surface-highest);
+      border-radius: 14px;
+      padding: 4px;
+      gap: 4px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px 8px;
+      border: none;
+      background: transparent;
+      border-radius: 10px;
+      font-family: var(--font-head);
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--on-surface-var);
+      cursor: pointer;
+      transition: background .2s, color .2s, box-shadow .2s;
+      letter-spacing: .01em;
+    }
+    .tab-btn.active {
+      background: var(--surface-lowest);
+      color: var(--primary-cont);
+      box-shadow: 0 2px 12px rgba(0,35,111,.10);
+    }
+    .tab-btn:hover:not(.active) { background: rgba(255,255,255,.5); }
+
+    .screen { display: none; flex: 1; padding: 20px 24px 32px; flex-direction: column; gap: 18px; }
+    .screen.active { display: flex; }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--on-surface-var);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .card {
+      background: var(--surface-lowest);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 2px 24px rgba(25,28,30,.045);
+    }
+
+    .input-cluster { display: flex; gap: 10px; }
+    .input-group { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .input-group label {
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--on-surface-var);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .time-input {
+      width: 100%;
+      padding: 12px 14px;
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      background: var(--surface-highest);
+      border: none;
+      border-radius: 12px;
+      outline: none;
+      text-align: center;
+      transition: box-shadow .2s, background .2s;
+      -moz-appearance: textfield;
+    }
+    .time-input::-webkit-inner-spin-button,
+    .time-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .time-input:focus {
+      background: var(--surface-low);
+      box-shadow: 0 0 0 2px var(--secondary), 0 0 12px rgba(0,88,190,.10);
+    }
+    .input-sep {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--on-surface-var);
+      align-self: flex-end;
+      padding-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    /* ── NOTE ── */
+    .note {
+      font-size: .75rem;
+      color: var(--on-surface-var);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ── RESULT HERO ── */
+    .result-hero {
+      background: var(--surface-lowest);
+      border-radius: 18px;
+      padding: 28px 20px;
+      box-shadow: 0 2px 24px rgba(25,28,30,.045);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .result-hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; left: -40px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(30,58,138,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .result-label {
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--on-surface-var);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 8px;
+    }
+    .result-value {
+      font-family: var(--font-head);
+      font-size: 3.4rem;
+      font-weight: 700;
+      color: var(--primary-cont);
+      line-height: 1;
+      letter-spacing: -.03em;
+    }
+    .result-unit {
+      font-family: var(--font-body);
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--on-surface-var);
+      margin-top: 6px;
+    }
+    .result-empty {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--outline-var);
+    }
+
+    /* ── PRIMARY BUTTON ── */
+    .btn-primary {
+      width: 100%;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-cont) 100%);
+      color: #fff;
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,35,111,.25);
+      transition: background .2s, box-shadow .2s, transform .1s;
+    }
+    .btn-primary:hover { background: linear-gradient(135deg, var(--primary-cont) 0%, var(--secondary-cont) 100%); box-shadow: 0 6px 24px rgba(0,35,111,.32); }
+    .btn-primary:active { transform: scale(.98); }
+
+    .btn-secondary {
+      flex: 1;
+      padding: 13px 16px;
+      border: none;
+      border-radius: 12px;
+      background: var(--surface-high);
+      color: var(--on-surface);
+      font-family: var(--font-head);
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    .btn-secondary:hover { background: var(--surface-highest); }
+    .btn-secondary:active { transform: scale(.97); }
+
+    .btn-danger {
+      flex: 1;
+      padding: 13px 16px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(186,26,26,.09);
+      color: var(--error);
+      font-family: var(--font-head);
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    .btn-danger:hover { background: rgba(186,26,26,.16); }
+    .btn-danger:active { transform: scale(.97); }
+
+    .btn-row { display: flex; gap: 10px; }
+
+    /* ── RECENT ACTIVITY ── */
+    .activity-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .activity-header .section-label { margin: 0; }
+    .clear-btn {
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background .15s;
+    }
+    .clear-btn:hover { background: rgba(0,88,190,.08); }
+
+    .activity-list { display: flex; flex-direction: column; gap: 10px; }
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--surface-low);
+      border-radius: 12px;
+      animation: slideIn .22s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .activity-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-cont) 100%);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .activity-icon svg { width: 16px; height: 16px; }
+    .activity-body { flex: 1; min-width: 0; }
+    .activity-input {
+      font-family: var(--font-head);
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--on-surface);
+    }
+    .activity-meta {
+      font-size: .72rem;
+      color: var(--on-surface-var);
+      font-weight: 500;
+      margin-top: 1px;
+    }
+    .activity-result {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary-cont);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .activity-result span {
+      display: block;
+      font-family: var(--font-body);
+      font-size: .65rem;
+      font-weight: 600;
+      color: var(--on-surface-var);
+      text-align: right;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px 0;
+      color: var(--on-surface-var);
+      font-size: .85rem;
+      font-weight: 500;
+    }
+
+    /* ── SUM SCREEN ── */
+    .sum-total-card {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-cont) 100%);
+      border-radius: 18px;
+      padding: 20px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .sum-total-card::after {
+      content: '';
+      position: absolute;
+      right: -20px; top: -20px;
+      width: 120px; height: 120px;
+      background: rgba(255,255,255,.06);
+      border-radius: 50%;
+    }
+    .sum-total-label {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: .75;
+      margin-bottom: 4px;
+    }
+    .sum-total-time {
+      font-family: var(--font-head);
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.1;
+    }
+    .sum-total-decimal {
+      font-family: var(--font-body);
+      font-size: .9rem;
+      font-weight: 600;
+      opacity: .8;
+      margin-top: 4px;
+    }
+    .sum-count {
+      position: absolute;
+      right: 20px;
+      bottom: 16px;
+      font-size: .7rem;
+      font-weight: 600;
+      opacity: .6;
+      letter-spacing: .04em;
+    }
+
+    .entry-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--surface-low);
+      border-radius: 10px;
+      animation: slideIn .2s ease;
+    }
+    .entry-chip-time {
+      font-family: var(--font-head);
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--on-surface);
+    }
+    .entry-chip-dec {
+      font-family: var(--font-head);
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--secondary-cont);
+    }
+    .entry-chip-remove {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--on-surface-var);
+      padding: 4px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      transition: color .15s, background .15s;
+    }
+    .entry-chip-remove:hover { color: var(--error); background: rgba(186,26,26,.08); }
+
+    .entries-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; }
+    .entries-list::-webkit-scrollbar { width: 4px; }
+    .entries-list::-webkit-scrollbar-thumb { background: var(--surface-highest); border-radius: 2px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 16px 24px 24px;
+      font-size: .7rem;
+      color: var(--on-surface-var);
+      font-weight: 500;
+      border-top: 1px solid rgba(197,197,211,.2);
+      margin-top: auto;
+    }
+    footer a { color: var(--secondary); text-decoration: none; margin: 0 6px; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--on-surface);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: .82rem;
+      font-weight: 600;
+      padding: 12px 22px;
+      border-radius: 100px;
+      box-shadow: 0 8px 32px rgba(25,28,30,.28);
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+      z-index: 100;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <polyline points="12 7 12 12 15 14"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">IykeSol Convert</div>
+      <div class="logo-sub">Precision Timing</div>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" id="tab-convert" role="tab" aria-selected="true" onclick="switchTab('convert')">⏱ Time → Decimal</button>
+    <button class="tab-btn" id="tab-sum" role="tab" aria-selected="false" onclick="switchTab('sum')">
+      <svg style="vertical-align:middle;margin-right:4px" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Sum &amp; Convert
+    </button>
+  </div>
+
+  <!-- ══ SCREEN 1: Convert ══ -->
+  <section class="screen active" id="screen-convert" role="tabpanel">
+
+    <div>
+      <p class="section-label" style="margin-bottom:12px;">Time to Decimal</p>
+      <div class="card">
+        <div class="input-cluster">
+          <div class="input-group">
+            <label for="c-hrs">Hours</label>
+            <input class="time-input" type="number" id="c-hrs" min="0" max="999" placeholder="00" value="" oninput="liveConvert()" />
+          </div>
+          <div class="input-sep">:</div>
+          <div class="input-group">
+            <label for="c-min">Min</label>
+            <input class="time-input" type="number" id="c-min" min="0" max="59" placeholder="00" value="" oninput="limitField(this,59); liveConvert()" />
+          </div>
+          <div class="input-sep">:</div>
+          <div class="input-group">
+            <label for="c-sec">Sec</label>
+            <input class="time-input" type="number" id="c-sec" min="0" max="59" placeholder="00" value="" oninput="limitField(this,59); liveConvert()" />
+          </div>
+        </div>
+        <p class="note" style="margin-top:14px;">Rounded to 3 decimal places</p>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="result-hero" id="convert-result-card">
+      <div class="result-label">Result</div>
+      <div class="result-empty" id="convert-result-empty">Enter a time above</div>
+      <div class="result-value" id="convert-result-value" style="display:none;"></div>
+      <div class="result-unit" id="convert-result-unit" style="display:none;">decimal hours</div>
+    </div>
+
+    <button class="btn-primary" id="convert-save-btn" onclick="saveConvert()" style="display:none;">Save to History</button>
+    <button class="btn-primary" onclick="convertAndSave()" id="convert-go-btn">Convert</button>
+
+    <!-- ACTIVITY -->
+    <div class="card">
+      <div class="activity-header">
+        <p class="section-label">Recent Activity</p>
+        <button class="clear-btn" onclick="clearHistory('convert')">Clear</button>
+      </div>
+      <div class="activity-list" id="convert-history"></div>
+    </div>
+
+  </section>
+
+  <!-- ══ SCREEN 2: Sum & Convert ══ -->
+  <section class="screen" id="screen-sum" role="tabpanel">
+
+    <div>
+      <p class="section-label" style="margin-bottom:12px;">Add Time Entry</p>
+      <div class="card">
+        <div class="input-cluster">
+          <div class="input-group">
+            <label for="s-hrs">Hours</label>
+            <input class="time-input" type="number" id="s-hrs" min="0" max="999" placeholder="00" />
+          </div>
+          <div class="input-sep">:</div>
+          <div class="input-group">
+            <label for="s-min">Min</label>
+            <input class="time-input" type="number" id="s-min" min="0" max="59" placeholder="00" oninput="limitField(this,59)" />
+          </div>
+          <div class="input-sep">:</div>
+          <div class="input-group">
+            <label for="s-sec">Sec</label>
+            <input class="time-input" type="number" id="s-sec" min="0" max="59" placeholder="00" oninput="limitField(this,59)" />
+          </div>
+        </div>
+        <div class="btn-row" style="margin-top:14px;">
+          <button class="btn-primary" onclick="addEntry()" style="font-size:.85rem;padding:12px;">Add Entry</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="sum-total-card" id="sum-total-card">
+      <div class="sum-total-label">Total Sum</div>
+      <div class="sum-total-time" id="sum-total-time">00:00:00</div>
+      <div class="sum-total-decimal" id="sum-total-decimal">0.000 hrs decimal</div>
+      <div class="sum-count" id="sum-count">0 entries</div>
+    </div>
+
+    <!-- ENTRIES -->
+    <div>
+      <div class="activity-header">
+        <p class="section-label">Current Entries</p>
+        <button class="clear-btn" onclick="clearEntries()">Clear All</button>
+      </div>
+      <div class="entries-list" id="entries-list">
+        <div class="empty-state">No entries yet. Add some above!</div>
+      </div>
+    </div>
+
+    <!-- SAVE SUM -->
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="saveSumToHistory()">Save to History</button>
+    </div>
+
+    <!-- ACTIVITY -->
+    <div class="card">
+      <div class="activity-header">
+        <p class="section-label">Recent Activity</p>
+        <button class="clear-btn" onclick="clearHistory('sum')">Clear</button>
+      </div>
+      <div class="activity-list" id="sum-history"></div>
+    </div>
+
+  </section>
+
+  <footer>
+    IykeSol Convert &nbsp;|&nbsp; © 2026 Precision Timing.
+    <br style="margin-bottom:4px"/>
+    Developed by <a href="https://iykesol.vercel.app" target="_blank" rel="noopener noreferrer">IykeSol</a>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const $ = id => document.getElementById(id);
+
+  function limitField(el, max) {
+    let v = parseInt(el.value);
+    if (!isNaN(v) && v > max) el.value = max;
+    if (!isNaN(v) && v < 0)   el.value = 0;
+  }
+
+  function pad(n) { return String(Math.floor(n)).padStart(2, '0'); }
+
+  function toDecimal(h, m, s) {
+    return h + m / 60 + s / 3600;
+  }
+
+  function toHMS(totalSec) {
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = Math.floor(totalSec % 60);
+    return { h, m, s, str: `${pad(h)}:${pad(m)}:${pad(s)}` };
+  }
+
+  function timeAgo(ts) {
+    const diff = Date.now() - ts;
+    if (diff < 60000)  return 'Just now';
+    if (diff < 3600000) return Math.round(diff/60000) + 'm ago';
+    if (diff < 86400000) return Math.round(diff/3600000) + 'h ago';
+    return 'Yesterday';
+  }
+
+  function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  function switchTab(tab) {
+    ['convert','sum'].forEach(t => {
+      $(`tab-${t}`).classList.toggle('active', t === tab);
+      $(`tab-${t}`).setAttribute('aria-selected', t === tab);
+      $(`screen-${t}`).classList.toggle('active', t === tab);
+    });
+  }
+
+  let convertHistory = JSON.parse(localStorage.getItem('iykesol_convert_hist') || '[]');
+
+  function liveConvert() {
+    const h = parseFloat($('c-hrs').value) || 0;
+    const m = parseFloat($('c-min').value) || 0;
+    const s = parseFloat($('c-sec').value) || 0;
+
+    const hasInput = h || m || s;
+    if (!hasInput) {
+      $('convert-result-empty').style.display = '';
+      $('convert-result-value').style.display = 'none';
+      $('convert-result-unit').style.display = 'none';
+      $('convert-save-btn').style.display = 'none';
+      return;
+    }
+
+    const dec = toDecimal(h, m, s).toFixed(3);
+    $('convert-result-empty').style.display = 'none';
+    $('convert-result-value').textContent = dec;
+    $('convert-result-value').style.display = '';
+    $('convert-result-unit').style.display = '';
+    $('convert-save-btn').style.display = '';
+  }
+
+  function convertAndSave() {
+    const h = parseFloat($('c-hrs').value) || 0;
+    const m = parseFloat($('c-min').value) || 0;
+    const s = parseFloat($('c-sec').value) || 0;
+    if (!h && !m && !s) { showToast('Please enter a time first'); return; }
+    saveConvert();
+  }
+
+  function saveConvert() {
+    const h = parseFloat($('c-hrs').value) || 0;
+    const m = parseFloat($('c-min').value) || 0;
+    const s = parseFloat($('c-sec').value) || 0;
+    if (!h && !m && !s) return;
+
+    const dec = toDecimal(h, m, s).toFixed(3);
+    const timeStr = `${pad(h)}:${pad(m)}:${pad(s)}`;
+
+    convertHistory.unshift({ timeStr, dec, ts: Date.now() });
+    if (convertHistory.length > 20) convertHistory.pop();
+    localStorage.setItem('iykesol_convert_hist', JSON.stringify(convertHistory));
+    renderConvertHistory();
+    showToast('Saved to history ✓');
+
+    // reset
+    $('c-hrs').value = '';
+    $('c-min').value = '';
+    $('c-sec').value = '';
+    liveConvert();
+  }
+
+  function renderConvertHistory() {
+    const list = $('convert-history');
+    if (!convertHistory.length) {
+      list.innerHTML = '<div class="empty-state">No history yet</div>';
+      return;
+    }
+    list.innerHTML = convertHistory.map((e,i) => `
+      <div class="activity-item" id="ci-${i}">
+        <div class="activity-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>
+          </svg>
+        </div>
+        <div class="activity-body">
+          <div class="activity-input">${e.timeStr}</div>
+          <div class="activity-meta">Original Input &nbsp;·&nbsp; ${timeAgo(e.ts)}</div>
+        </div>
+        <div class="activity-result">${e.dec} hrs<span>decimal</span></div>
+      </div>
+    `).join('');
+  }
+
+  function clearHistory(type) {
+    if (type === 'convert') {
+      convertHistory = [];
+      localStorage.removeItem('iykesol_convert_hist');
+      renderConvertHistory();
+    } else {
+      sumHistory = [];
+      localStorage.removeItem('iykesol_sum_hist');
+      renderSumHistory();
+    }
+    showToast('History cleared');
+  }
+
+  let entries = JSON.parse(localStorage.getItem('iykesol_entries') || '[]');
+  let sumHistory = JSON.parse(localStorage.getItem('iykesol_sum_hist') || '[]');
+
+  function addEntry() {
+    const h = parseFloat($('s-hrs').value) || 0;
+    const m = parseFloat($('s-min').value) || 0;
+    const s = parseFloat($('s-sec').value) || 0;
+    if (!h && !m && !s) { showToast('Please enter a time first'); return; }
+
+    const totalSec = h*3600 + m*60 + s;
+    const timeStr = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    const dec = toDecimal(h, m, s).toFixed(3);
+
+    entries.push({ timeStr, dec, totalSec, ts: Date.now() });
+    localStorage.setItem('iykesol_entries', JSON.stringify(entries));
+    renderEntries();
+    updateTotal();
+
+    $('s-hrs').value = '';
+    $('s-min').value = '';
+    $('s-sec').value = '';
+    showToast('Entry added');
+  }
+
+  function removeEntry(i) {
+    entries.splice(i, 1);
+    localStorage.setItem('iykesol_entries', JSON.stringify(entries));
+    renderEntries();
+    updateTotal();
+  }
+
+  function clearEntries() {
+    entries = [];
+    localStorage.removeItem('iykesol_entries');
+    renderEntries();
+    updateTotal();
+    showToast('Entries cleared');
+  }
+
+  function updateTotal() {
+    const totalSec = entries.reduce((a, e) => a + e.totalSec, 0);
+    const { str } = toHMS(totalSec);
+    const dec = (totalSec / 3600).toFixed(3);
+    $('sum-total-time').textContent = str;
+    $('sum-total-decimal').textContent = `${dec} hrs decimal`;
+    $('sum-count').textContent = `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}`;
+  }
+
+  function renderEntries() {
+    const list = $('entries-list');
+    if (!entries.length) {
+      list.innerHTML = '<div class="empty-state">No entries yet. Add some above!</div>';
+      return;
+    }
+    list.innerHTML = entries.map((e,i) => `
+      <div class="entry-chip">
+        <div class="entry-chip-time">${e.timeStr}</div>
+        <div class="entry-chip-dec">${e.dec} hrs</div>
+        <button class="entry-chip-remove" onclick="removeEntry(${i})" title="Remove">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    `).join('');
+  }
+
+  function saveSumToHistory() {
+    if (!entries.length) { showToast('No entries to save'); return; }
+    const totalSec = entries.reduce((a, e) => a + e.totalSec, 0);
+    const { str } = toHMS(totalSec);
+    const dec = (totalSec / 3600).toFixed(3);
+    sumHistory.unshift({ timeStr: str, dec, count: entries.length, ts: Date.now() });
+    if (sumHistory.length > 20) sumHistory.pop();
+    localStorage.setItem('iykesol_sum_hist', JSON.stringify(sumHistory));
+    renderSumHistory();
+    showToast('Sum saved to history ✓');
+  }
+
+  function renderSumHistory() {
+    const list = $('sum-history');
+    if (!sumHistory.length) {
+      list.innerHTML = '<div class="empty-state">No history yet</div>';
+      return;
+    }
+    list.innerHTML = sumHistory.map((e,i) => `
+      <div class="activity-item">
+        <div class="activity-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+        <div class="activity-body">
+          <div class="activity-input">${e.timeStr}</div>
+          <div class="activity-meta">${e.count} entries &nbsp;·&nbsp; ${timeAgo(e.ts)}</div>
+        </div>
+        <div class="activity-result">${e.dec} hrs<span>total</span></div>
+      </div>
+    `).join('');
+  }
+
+  renderConvertHistory();
+  renderEntries();
+  updateTotal();
+  renderSumHistory();
+</script>
+</body>
+</html>
